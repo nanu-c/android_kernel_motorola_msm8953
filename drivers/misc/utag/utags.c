@@ -321,8 +321,15 @@ static int open_utags(struct blkdev *cb)
 
 	if (cb->filep)
 		return 0;
+	if(strcmp("[/dev/block/bootdevice/by-name/hw]", cb->name )){
+		pr_info("utag path is [%s] \n", cb->name);
+		cb->filep = filp_open("/dev/disk/by-partlabel/hw", O_RDWR|O_SYNC, 0600);
 
-	cb->filep = filp_open(cb->name, O_RDWR|O_SYNC, 0600);
+	}
+	else {
+		cb->filep = filp_open(cb->name, O_RDWR|O_SYNC, 0600);
+
+	}
 	if (IS_ERR_OR_NULL(cb->filep)) {
 		int rc = PTR_ERR(cb->filep);
 		if (rc == -EROFS) {
