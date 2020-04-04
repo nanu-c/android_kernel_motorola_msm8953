@@ -966,22 +966,8 @@ err_kcontrol:
 
 static int wm_coeff_init_control_caches(struct wm_adsp *dsp)
 {
-	LIST_HEAD(buf_list);
-	const struct firmware *firmware;
-	struct regmap *regmap = dsp->regmap;
-	unsigned int pos = 0;
-	const struct wmfw_header *header;
-	const struct wmfw_adsp1_sizes *adsp1_sizes;
-	const struct wmfw_adsp2_sizes *adsp2_sizes;
-	const struct wmfw_footer *footer;
-	const struct wmfw_region *region;
-	const struct wm_adsp_region *mem;
-	const char *region_name;
-	char *file, *text = NULL;
-	struct wm_adsp_buf *buf;
-	unsigned int reg;
-	int regions = 0;
-	int ret, offset, type, sizes;
+	struct wm_coeff_ctl *ctl;
+	int ret = 0;
 
 	list_for_each_entry(ctl, &dsp->ctl_list, list) {
 		if (!ctl->enabled || (ctl->flags & WMFW_CTL_FLAG_VOLATILE))
@@ -1385,7 +1371,7 @@ static int wm_adsp_load(struct wm_adsp *dsp)
 	const struct wmfw_region *region;
 	const struct wm_adsp_region *mem;
 	const char *region_name;
-	char *file, *text;
+	char *file, *text = NULL;
 	struct wm_adsp_buf *buf;
 	unsigned int reg;
 	int regions = 0;

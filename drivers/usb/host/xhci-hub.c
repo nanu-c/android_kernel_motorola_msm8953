@@ -304,7 +304,6 @@ static int xhci_stop_device(struct xhci_hcd *xhci, int slot_id, int suspend)
 				xhci_free_command(xhci, command);
 				goto cmd_cleanup;
 			}
-
 		}
 	}
 	ret = xhci_queue_stop_endpoint(xhci, cmd, slot_id, 0, suspend);
@@ -1218,7 +1217,7 @@ int xhci_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
 				xhci_set_link_state(xhci, port_array, wIndex,
 							XDEV_RESUME);
 				spin_unlock_irqrestore(&xhci->lock, flags);
-				msleep(20);
+				usleep_range(21000, 21500);
 				spin_lock_irqsave(&xhci->lock, flags);
 				xhci_set_link_state(xhci, port_array, wIndex,
 							XDEV_U0);
@@ -1455,7 +1454,7 @@ int xhci_bus_resume(struct usb_hcd *hcd)
 						port_index, XDEV_RESUME);
 
 				spin_unlock_irqrestore(&xhci->lock, flags);
-				msleep(20);
+				usleep_range(21000, 21500);
 				spin_lock_irqsave(&xhci->lock, flags);
 
 				xhci_set_link_state(xhci, port_array,
